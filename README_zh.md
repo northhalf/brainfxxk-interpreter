@@ -4,7 +4,7 @@
 
 用 Dart 编写的 Brainfuck 解释器:**可复用库为核心 + CLI 前端**。
 
-> ⚠️ 项目处于早期开发阶段,以下功能与用法为设计目标;已实现部分以代码为准。
+> ✨ v0.1.0 - 库、REPL、CLI 均已实现。
 
 ## 特性
 
@@ -37,7 +37,7 @@ dart pub get
 
 ```bash
 # 执行文件
-dart run bin/bf.dart examples/hello_world.bf
+dart run bin/bf.dart example/hello_world.bf
 
 # 直接执行代码字符串
 dart run bin/bf.dart -e '+++++[>+++++++++++++<-]>.'   # 输出 A
@@ -60,7 +60,7 @@ bf> q
 
 ```bash
 dart pub global activate --source path .
-bf examples/hello_world.bf
+bf example/hello_world.bf
 ```
 
 Exit code:0 成功 / 1 运行错误 / 64 用法错误 / 66 文件不存在或不可读。
@@ -104,7 +104,7 @@ brainfxxk-interpreter/
 │       ├── io.dart           # BrainfuckIO 抽象 + stdin/stdout 实现
 │       ├── repl.dart         # REPL:括号缓冲、续行,q/exit/EOF 退出
 │       └── exceptions.dart   # 解析/运行异常(带位置信息)
-├── examples/
+├── example/
 │   ├── hello_world.bf
 │   ├── echo.bf
 │   └── squares.bf
@@ -116,7 +116,7 @@ brainfxxk-interpreter/
     ├── interpreter_test.dart
     ├── repl_test.dart
     └── e2e/
-        └── cli_e2e_test.dart # 跑 examples 比对预期输出
+        └── cli_e2e_test.dart # 跑 example 比对预期输出
 ```
 
 ## 开发

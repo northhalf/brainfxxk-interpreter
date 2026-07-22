@@ -4,8 +4,7 @@ English | [中文](README_zh.md)
 
 A Brainfuck interpreter written in Dart: **a reusable library core with a CLI front end**.
 
-> ⚠️ Early development stage — the features and usage below describe the design
-> goals; refer to the code for what is actually implemented.
+> ✨ v0.1.0 - the library, REPL, and CLI are all implemented.
 
 ## Features
 
@@ -43,7 +42,7 @@ dart pub get
 
 ```bash
 # Run a file
-dart run bin/bf.dart examples/hello_world.bf
+dart run bin/bf.dart example/hello_world.bf
 
 # Run a code string directly
 dart run bin/bf.dart -e '+++++[>+++++++++++++<-]>.'   # prints A
@@ -68,7 +67,7 @@ Or activate globally to use the `bf` command directly:
 
 ```bash
 dart pub global activate --source path .
-bf examples/hello_world.bf
+bf example/hello_world.bf
 ```
 
 Exit codes: 0 success / 1 runtime error / 64 usage error / 66 file not found or unreadable.
@@ -113,7 +112,7 @@ brainfxxk-interpreter/
 │       ├── io.dart           # BrainfuckIO abstraction + stdin/stdout impl
 │       ├── repl.dart         # REPL: bracket buffering, continuation, q/exit/EOF to quit
 │       └── exceptions.dart   # parse/runtime exceptions with positions
-├── examples/
+├── example/
 │   ├── hello_world.bf
 │   ├── echo.bf
 │   └── squares.bf
@@ -125,7 +124,7 @@ brainfxxk-interpreter/
     ├── interpreter_test.dart
     ├── repl_test.dart
     └── e2e/
-        └── cli_e2e_test.dart # runs examples/ and compares expected output
+        └── cli_e2e_test.dart # runs example/ programs and compares expected output
 ```
 
 ## Development

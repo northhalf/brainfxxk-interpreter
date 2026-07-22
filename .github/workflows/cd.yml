@@ -1,0 +1,63 @@
+name: CD
+
+# Builds a native `bf` executable for Linux, macOS, and Windows (x64) and
+# attaches them to a GitHub Release. The release job runs in the `deploy`
+# environment so it can be gated by required reviewers.
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: bf-linux-x64
+          - os: macos-latest
+            artifact: bf-macos-x64
+          - os: windows-latest
+            artifact: bf-windows-x64.exe
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - name: Install dependencies
+        run: dart pub get
+      - name: Compile native executable
+        run: dart compile exe bin/bf.dart -o ${{ matrix.artifact }}
+        shell: bash
+      - name: Smoke-test the executable
+        run: ./${{ matrix.artifact }} -e '+++.'
+        shell: bash
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact }}
+          if-no-files-found: error
+
+  release:
+    name: Publish to GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    environment: deploy
+    permissions:
+      contents: write
+    steps:
+      - name: Download all binaries
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Create release with binaries
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

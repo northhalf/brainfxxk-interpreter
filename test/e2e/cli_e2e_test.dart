@@ -92,4 +92,44 @@ void main() {
       expect(output, [...'bf> '.codeUnits, 3, ...'bf> '.codeUnits]);
     });
   });
+
+  group('examples', () {
+    test('hello_world.bf prints Hello World!', () async {
+      final result = await runCli(['example/hello_world.bf']);
+
+      expect(result.exitCode, 0, reason: result.stderr as String);
+      expect(utf8.decode(result.stdout as List<int>), 'Hello World!\n');
+    });
+
+    test('squares.bf prints a star bar chart of squares', () async {
+      final result = await runCli(['example/squares.bf']);
+
+      expect(result.exitCode, 0, reason: result.stderr as String);
+      final expected = [
+        for (final n in [25, 16, 9, 4, 1]) '*' * n,
+      ].join('\n');
+      expect(utf8.decode(result.stdout as List<int>), '$expected\n');
+    });
+
+    test('echo.bf echoes stdin and exits 1 at EOF', () async {
+      final process = await Process.start(
+        dart,
+        ['bin/bf.dart', 'example/echo.bf'],
+      );
+      final stderrFuture = process.stderr.transform(utf8.decoder).join();
+
+      process.stdin.add(utf8.encode('Hi'));
+      await process.stdin.close();
+
+      final output = await process.stdout.fold<List<int>>(
+        [],
+        (bytes, chunk) => bytes..addAll(chunk),
+      );
+      final stderr = await stderrFuture;
+
+      expect(await process.exitCode, 1);
+      expect(output, utf8.encode('Hi'));
+      expect(stderr, contains('end of input'));
+    });
+  });
 }

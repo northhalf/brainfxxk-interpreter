@@ -1,0 +1,34 @@
+name: Publish to pub.dev
+
+# Publishes the package to pub.dev using a GitHub-signed OIDC token (no
+# long-lived secret). Runs in the `deploy` environment.
+#
+# Setup (one time, by the package owner):
+#   1. Publish the package manually once: `dart pub publish`
+#      (interactive, confirms via email) to create it on pub.dev.
+#   2. On pub.dev, open the package's Admin > Publishing page and add
+#      this repository (northhalf/brainfxxk-interpreter) as a trusted
+#      publisher with the tag pattern `v{{version}}`.
+#   3. Push a tag like `v0.1.0` whose version matches pubspec.yaml to
+#      trigger this workflow; pub.dev verifies the tag matches.
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  publish:
+    name: Publish to pub.dev
+    runs-on: ubuntu-latest
+    environment: deploy
+    permissions:
+      id-token: write # Required for OIDC authentication with pub.dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - name: Install dependencies
+        run: dart pub get
+      - name: Publish
+        run: dart pub publish --force
