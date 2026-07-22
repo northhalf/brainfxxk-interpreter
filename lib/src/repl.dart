@@ -2,7 +2,6 @@
 library;
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:brainfxxk/src/exceptions.dart';
@@ -32,14 +31,29 @@ final class Repl {
 
   /// Creates a REPL wired to stdin and stdout.
   ///
-  /// Input lines come from stdin (UTF-8 decoded, split by line),
-  /// executed programs use a [StdioBrainfuckIO] for `,` and `.`, and
-  /// prompts and error messages go to stdout. The CLI uses this.
+  /// Input lines come from stdin via `stdin.readLineSync`, executed
+  /// programs use a [StdioBrainfuckIO] for `,` and `.`, and prompts
+  /// and error messages go to stdout. The CLI uses this.
+  ///
+  /// Lines are read with `stdin.readLineSync` rather than the async
+  /// `stdin` stream because the async stream does not reliably detect
+  /// end of input from a terminal Ctrl-D, while the synchronous read
+  /// does. The `async*` generator still yields one line at a time so
+  /// the loop can execute each program before reading the next.
   factory Repl.stdio() => Repl(
-    lines: stdin.transform(utf8.decoder).transform(const LineSplitter()),
+    lines: _stdioLines(),
     io: const StdioBrainfuckIO(),
     out: stdout,
   );
+
+  static Stream<String> _stdioLines() async* {
+    while (true) {
+      final line = stdin.readLineSync();
+      if (line == null) return;
+      yield line;
+    }
+  }
+
   static const String _prompt = 'bf> ';
   static const String _continuationPrompt = '... ';
 
