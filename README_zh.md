@@ -98,7 +98,7 @@ brainfxxk-interpreter/
 │   ├── brainfxxk.dart        # 库入口,导出公共 API
 │   └── src/
 │       ├── instruction.dart  # 指令枚举 + Program(指令列表 + 跳转表)
-│       ├── parser.dart       # 源码 → Program,括号匹配
+│       ├── parse.dart        # 源码 → Program,括号匹配
 │       ├── tape.dart         # 动态纸带,8-bit 回绕单元格
 │       ├── interpreter.dart  # 执行引擎
 │       ├── io.dart           # BrainfuckIO 抽象 + stdin/stdout 实现
@@ -109,7 +109,8 @@ brainfxxk-interpreter/
 │   ├── echo.bf
 │   └── squares.bf
 └── test/
-    ├── parser_test.dart
+    ├── instruction_test.dart
+    ├── parse_test.dart
     ├── tape_test.dart
     ├── interpreter_test.dart
     ├── repl_test.dart

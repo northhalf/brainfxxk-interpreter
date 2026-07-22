@@ -106,7 +106,7 @@ brainfxxk-interpreter/
 │   ├── brainfxxk.dart        # library entry, exports the public API
 │   └── src/
 │       ├── instruction.dart  # Instruction enum + Program (instructions + jump table)
-│       ├── parser.dart       # source -> Program, bracket matching
+│       ├── parse.dart        # source -> Program, bracket matching
 │       ├── tape.dart         # dynamic tape, 8-bit wrapping cells
 │       ├── interpreter.dart  # execution engine
 │       ├── io.dart           # BrainfuckIO abstraction + stdin/stdout impl
@@ -117,7 +117,8 @@ brainfxxk-interpreter/
 │   ├── echo.bf
 │   └── squares.bf
 └── test/
-    ├── parser_test.dart
+    ├── instruction_test.dart
+    ├── parse_test.dart
     ├── tape_test.dart
     ├── interpreter_test.dart
     ├── repl_test.dart
