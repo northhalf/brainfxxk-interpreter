@@ -6,3 +6,4 @@ library;
 export 'src/exceptions.dart';
 export 'src/instruction.dart';
 export 'src/parse.dart';
+export 'src/tape.dart';
