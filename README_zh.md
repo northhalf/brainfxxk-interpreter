@@ -110,6 +110,7 @@ brainfxxk-interpreter/
 │   └── squares.bf
 └── test/
     ├── instruction_test.dart
+    ├── io_test.dart
     ├── parse_test.dart
     ├── tape_test.dart
     ├── interpreter_test.dart
