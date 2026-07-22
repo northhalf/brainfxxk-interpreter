@@ -1,10 +1,21 @@
-# brainfxxk
+<div align="center">
+  <div style="width:200px">
+    <a href="https://github.com/northhalf/brainfxxk-interpreter">
+      <img src="assets/icon.webp" alt="brainfxxk" width="200">
+    </a>
+  </div>
 
-English | [中文](README_zh.md)
+<h1>brainfxxk</h1>
 
-A Brainfuck interpreter written in Dart: **a reusable library core with a CLI front end**.
+![Status](https://img.shields.io/badge/status-active-brightgreen) ![pub.dev](https://img.shields.io/pub/v/brainfxxk) ![pub points](https://img.shields.io/pub/points/brainfxxk) ![CI](https://github.com/northhalf/brainfxxk-interpreter/actions/workflows/ci.yml/badge.svg) ![Release](https://img.shields.io/github/v/release/northhalf/brainfxxk-interpreter) ![Downloads](https://img.shields.io/github/downloads/northhalf/brainfxxk-interpreter/total) ![License](https://img.shields.io/badge/license-MIT-blue)
 
-> ✨ v0.1.0 - the library, REPL, and CLI are all implemented.
+<p align="center">English | <a href="./README_zh.md">中文</a></p>
+
+<h5>A Brainfuck interpreter library and CLI written in Dart.</h5>
+
+Runs on Linux, macOS, and Windows (x64 and arm64).
+
+</div>
 
 ## Features
 

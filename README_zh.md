@@ -1,10 +1,21 @@
-# brainfxxk
+<div align="center">
+  <div style="width:200px">
+    <a href="https://github.com/northhalf/brainfxxk-interpreter">
+      <img src="assets/icon.webp" alt="brainfxxk" width="200">
+    </a>
+  </div>
 
-[English](README.md) | 中文
+<h1>brainfxxk</h1>
 
-用 Dart 编写的 Brainfuck 解释器:**可复用库为核心 + CLI 前端**。
+![Status](https://img.shields.io/badge/status-active-brightgreen) ![pub.dev](https://img.shields.io/pub/v/brainfxxk) ![pub points](https://img.shields.io/pub/points/brainfxxk) ![CI](https://github.com/northhalf/brainfxxk-interpreter/actions/workflows/ci.yml/badge.svg) ![Release](https://img.shields.io/github/v/release/northhalf/brainfxxk-interpreter) ![Downloads](https://img.shields.io/github/downloads/northhalf/brainfxxk-interpreter/total) ![License](https://img.shields.io/badge/license-MIT-blue)
 
-> ✨ v0.1.0 - 库、REPL、CLI 均已实现。
+<p align="center"><a href="./README.md">English</a> | 中文</p>
+
+<h5>用 Dart 编写的 Brainfuck 解释器:可复用库为核心 + CLI 前端。</h5>
+
+运行于 Linux、macOS、Windows(x64 与 arm64)。
+
+</div>
 
 ## 特性
 
