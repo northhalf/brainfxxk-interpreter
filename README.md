@@ -28,7 +28,7 @@ Brainfuck implementations differ widely in the details. This implementation:
 |---|---|
 | Cell | 8-bit (0–255); `+`/`-` wrap on overflow (255+1→0, 0-1→255) |
 | Tape | Grows dynamically to the right; moving the pointer left of 0 throws `BrainfuckRuntimeException` |
-| EOF | `,` at EOF leaves the cell **unchanged** |
+| EOF | `,` at EOF throws `BrainfuckRuntimeException` |
 | Brackets | Unmatched brackets throw `UnclosedBracketException` / `UnexpectedClosingBracketException` at parse time |
 
 ## Requirements
@@ -61,7 +61,8 @@ bf> >> [>><
 bf> q
 ```
 
-Quit the REPL with `q`, `exit`, or EOF (Ctrl-D).
+Quit the REPL with `q`, `exit`, or EOF (Ctrl-D). A runtime error —
+including `,` at end of input — prints an error and ends the session.
 
 Or activate globally to use the `bf` command directly:
 

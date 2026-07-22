@@ -22,7 +22,7 @@
 |---|---|
 | 单元格 | 8-bit(0–255),`+`/`-` 溢出回绕(255+1→0,0-1→255) |
 | 纸带 | 右侧动态扩展;指针左移越界(< 0)抛 `BrainfuckRuntimeException` |
-| EOF | `,` 读到 EOF 时单元格**保持不变** |
+| EOF | `,` 读到 EOF 时抛 `BrainfuckRuntimeException` |
 | 括号不匹配 | 解析期抛 `UnclosedBracketException` / `UnexpectedClosingBracketException` |
 
 ## 环境要求
@@ -54,7 +54,7 @@ bf> >> [>><
 bf> q
 ```
 
-输入 `q`、`exit` 或 EOF(Ctrl-D)退出 REPL。
+输入 `q`、`exit` 或 EOF(Ctrl-D)退出 REPL。运行期错误(含 `,` 读到 EOF)打印错误并结束会话。
 
 也可以全局激活后直接使用 `bf` 命令:
 

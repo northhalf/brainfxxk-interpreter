@@ -10,8 +10,8 @@ import 'dart:io';
 abstract interface class BrainfuckIO {
   /// Reads one byte of input.
   ///
-  /// @return the byte read (0–255), or null at end of input — at EOF
-  ///   the current cell is left unchanged
+  /// @return the byte read (0–255), or null at end of input — the
+  ///   interpreter throws a BrainfuckRuntimeException on EOF
   int? read();
 
   /// Writes one byte of output.
