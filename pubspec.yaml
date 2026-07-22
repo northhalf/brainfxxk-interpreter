@@ -1,6 +1,6 @@
 name: brainfxxk
 description: A Brainfuck interpreter library and CLI written in Dart.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/northhalf/brainfxxk-interpreter
 issue_tracker: https://github.com/northhalf/brainfxxk-interpreter/issues
 topics: [brainfuck, interpreter, cli, esoteric-languages]

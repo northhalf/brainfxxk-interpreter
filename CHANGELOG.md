@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- **Example**: add `example/brainfxxk_example.dart`, a runnable Dart
+  example that drives the interpreter through `parse()`, `Interpreter`,
+  and an in-memory `BrainfuckIO`
+
 ## 0.1.0
 
 Initial release of `brainfxxk`, a Brainfuck interpreter library and CLI
