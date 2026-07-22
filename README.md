@@ -63,12 +63,21 @@ bf> q
 Quit the REPL with `q`, `exit`, or EOF (Ctrl-D). A runtime error —
 including `,` at end of input — prints an error and ends the session.
 
-Or activate globally to use the `bf` command directly:
+Or install the `bf` command:
 
 ```bash
+# From pub.dev
+dart pub global activate brainfxxk
+
+# Or from a local checkout
 dart pub global activate --source path .
+
 bf example/hello_world.bf
 ```
+
+Prebuilt standalone executables (no Dart SDK needed) for Linux, macOS, and
+Windows on both x64 and arm64 are attached to each
+[release](https://github.com/northhalf/brainfxxk-interpreter/releases).
 
 Exit codes: 0 success / 1 runtime error / 64 usage error / 66 file not found or unreadable.
 

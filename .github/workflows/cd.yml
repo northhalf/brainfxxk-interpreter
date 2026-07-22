@@ -1,8 +1,12 @@
 name: CD
 
-# Builds a native `bf` executable for Linux, macOS, and Windows (x64) and
-# attaches them to a GitHub Release. The release job runs in the `deploy`
-# environment so it can be gated by required reviewers.
+# Builds native `bf` executables for Linux, macOS, and Windows on both x64
+# and arm64, and attaches them to a GitHub Release. The release job runs in
+# the `deploy` environment so it can be gated by required reviewers.
+#
+# Note: windows-11-arm is a public-preview runner. With fail-fast: true, a
+# failure on any platform cancels the whole release; drop windows-arm64 or
+# relax fail-fast if that runner proves flaky.
 on:
   push:
     tags:
@@ -11,20 +15,26 @@ on:
 
 jobs:
   build:
-    name: Build (${{ matrix.os }})
+    name: Build (${{ matrix.artifact }})
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         include:
           - os: ubuntu-latest
             artifact: bf-linux-x64
-          - os: macos-latest
+          - os: ubuntu-24.04-arm
+            artifact: bf-linux-arm64
+          - os: macos-15-intel
             artifact: bf-macos-x64
+          - os: macos-latest
+            artifact: bf-macos-arm64
           - os: windows-latest
             artifact: bf-windows-x64.exe
+          - os: windows-11-arm
+            artifact: bf-windows-arm64.exe
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: stable
@@ -37,7 +47,7 @@ jobs:
         run: ./${{ matrix.artifact }} -e '+++.'
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact }}
           path: ${{ matrix.artifact }}
@@ -52,12 +62,12 @@ jobs:
       contents: write
     steps:
       - name: Download all binaries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
       - name: Create release with binaries
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: dist/*
           generate_release_notes: true

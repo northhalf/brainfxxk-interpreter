@@ -56,12 +56,19 @@ bf> q
 
 输入 `q`、`exit` 或 EOF(Ctrl-D)退出 REPL。运行期错误(含 `,` 读到 EOF)打印错误并结束会话。
 
-也可以全局激活后直接使用 `bf` 命令:
+也可以安装 `bf` 命令:
 
 ```bash
+# 从 pub.dev
+dart pub global activate brainfxxk
+
+# 或从本地源码
 dart pub global activate --source path .
+
 bf example/hello_world.bf
 ```
+
+每个 [release](https://github.com/northhalf/brainfxxk-interpreter/releases) 附带预编译的独立可执行文件(无需 Dart SDK),覆盖 Linux、macOS、Windows 的 x64 与 arm64。
 
 Exit code:0 成功 / 1 运行错误 / 64 用法错误 / 66 文件不存在或不可读。
 
