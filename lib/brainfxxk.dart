@@ -11,4 +11,5 @@ export 'src/instruction.dart';
 export 'src/interpreter.dart';
 export 'src/io.dart';
 export 'src/parse.dart';
+export 'src/stepper.dart';
 export 'src/tape.dart';

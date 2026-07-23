@@ -5,6 +5,7 @@ import 'package:brainfxxk/src/exceptions.dart';
 import 'package:brainfxxk/src/instruction.dart';
 import 'package:brainfxxk/src/io.dart';
 import 'package:brainfxxk/src/parse.dart';
+import 'package:brainfxxk/src/stepper.dart';
 import 'package:brainfxxk/src/tape.dart';
 
 /// Executes compiled Brainfuck [Program]s on a [Tape].
@@ -13,6 +14,10 @@ import 'package:brainfxxk/src/tape.dart';
 /// program in three ways: compiled from source at construction time
 /// with [Interpreter.fromSource], or passed to [run] directly — or
 /// both, in which case the argument wins.
+///
+/// This class is a batch facade over [Stepper]; for single-instruction
+/// execution with an observable program counter, use [Stepper]
+/// directly.
 final class Interpreter {
   /// Creates an interpreter with no preloaded program.
   ///
@@ -63,36 +68,6 @@ final class Interpreter {
         'or pass a Program to run()',
       );
     }
-
-    final instructions = resolved.instructions;
-    final jumpTable = resolved.jumpTable;
-    var pc = 0;
-    while (pc < instructions.length) {
-      switch (instructions[pc]) {
-        case Instruction.moveRight:
-          _tape.moveRight();
-        case Instruction.moveLeft:
-          _tape.moveLeft();
-        case Instruction.increment:
-          _tape.increment();
-        case Instruction.decrement:
-          _tape.decrement();
-        case Instruction.output:
-          _io.write(_tape.read());
-        case Instruction.input:
-          final byte = _io.read();
-          if (byte == null) {
-            throw const BrainfuckRuntimeException(
-              'input instruction read at end of input',
-            );
-          }
-          _tape.write(byte);
-        case Instruction.loopStart:
-          if (_tape.read() == 0) pc = jumpTable[pc];
-        case Instruction.loopEnd:
-          if (_tape.read() != 0) pc = jumpTable[pc];
-      }
-      pc++;
-    }
+    Stepper(resolved, io: _io, tape: _tape).run();
   }
 }
