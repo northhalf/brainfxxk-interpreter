@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.2.0
+
+Web-compilable core plus a single-stepping execution engine, in
+preparation for the planned Flutter Web playground.
+
+- **Breaking**: the core entrypoint `package:brainfxxk/brainfxxk.dart`
+  is now platform-neutral pure Dart and compiles to the web.
+  `StdioBrainfuckIO` moved to `package:brainfxxk/stdio.dart` and `Repl`
+  to `package:brainfxxk/repl.dart`; neither is exported from the core
+  entry anymore
+- **Breaking**: the `Interpreter` constructors' `io` parameter is now
+  required — its old default was `StdioBrainfuckIO`, which the pure
+  core cannot reference
+- **Stepper**: new single-instruction execution engine with `step()`,
+  `run()`, `isHalted`, an inspectable `tape`, and a `pc` getter/setter;
+  a failed instruction keeps `pc` so it can be retried (e.g. `,` at end
+  of input). `Interpreter` is now a batch facade over `Stepper`
+- **Parser**: opt-in source mapping — `parse(source,
+  recordSourceOffsets: true)` fills the new nullable
+  `Program.sourceOffsets` with the UTF-16 offset of each instruction's
+  source character, mapping a program counter back to the source text
+- **Example**: add `example/stepper_example.dart`, tracing a program
+  instruction by instruction and demonstrating a retry after end of
+  input
+
 ## 0.1.1
 
 - **Example**: add `example/brainfxxk_example.dart`, a runnable Dart

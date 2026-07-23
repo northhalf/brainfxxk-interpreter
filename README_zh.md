@@ -122,16 +122,22 @@ brainfxxk-interpreter/
 ├── bin/
 │   └── bf.dart               # CLI 入口:文件 / -e / REPL 三模式
 ├── lib/
-│   ├── brainfxxk.dart        # 库入口,导出公共 API
+│   ├── brainfxxk.dart        # 平台无关的核心入口,导出公共 API
+│   ├── stdio.dart            # 入口:stdin/stdout BrainfuckIO(dart:io)
+│   ├── repl.dart             # 入口:交互式 REPL(dart:io)
 │   └── src/
 │       ├── instruction.dart  # 指令枚举 + Program(指令列表 + 跳转表)
-│       ├── parse.dart        # 源码 → Program,括号匹配
+│       ├── parse.dart        # 源码 → Program,括号匹配,可选源码偏移记录
 │       ├── tape.dart         # 动态纸带,8-bit 回绕单元格
-│       ├── interpreter.dart  # 执行引擎
-│       ├── io.dart           # BrainfuckIO 抽象 + stdin/stdout 实现
+│       ├── stepper.dart      # 单步执行引擎(pc、step、run)
+│       ├── interpreter.dart  # Stepper 的批量门面
+│       ├── io.dart           # BrainfuckIO 抽象
+│       ├── stdio.dart        # StdioBrainfuckIO:stdin/stdout 实现
 │       ├── repl.dart         # REPL:括号缓冲、续行,q/exit/EOF 退出
 │       └── exceptions.dart   # 解析/运行异常(带位置信息)
 ├── example/
+│   ├── brainfxxk_example.dart # 可运行的库示例(parse + Interpreter)
+│   ├── stepper_example.dart   # 可运行的 Stepper 示例(跟踪 + 重试)
 │   ├── hello_world.bf
 │   ├── echo.bf
 │   └── squares.bf
@@ -141,7 +147,10 @@ brainfxxk-interpreter/
     ├── parse_test.dart
     ├── tape_test.dart
     ├── interpreter_test.dart
+    ├── stepper_test.dart
     ├── repl_test.dart
+    ├── stdio_echo_harness.dart # io_test.dart 的辅助进程
+    ├── stdio_repl_harness.dart # repl_test.dart 的辅助进程
     └── e2e/
         └── cli_e2e_test.dart # 跑 example 比对预期输出
 ```

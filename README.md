@@ -132,16 +132,22 @@ brainfxxk-interpreter/
 ├── bin/
 │   └── bf.dart               # CLI entry: file / -e / REPL modes
 ├── lib/
-│   ├── brainfxxk.dart        # library entry, exports the public API
+│   ├── brainfxxk.dart        # platform-neutral core entry, exports the public API
+│   ├── stdio.dart            # entrypoint: stdin/stdout BrainfuckIO (dart:io)
+│   ├── repl.dart             # entrypoint: interactive REPL (dart:io)
 │   └── src/
 │       ├── instruction.dart  # Instruction enum + Program (instructions + jump table)
-│       ├── parse.dart        # source -> Program, bracket matching
+│       ├── parse.dart        # source -> Program, bracket matching, opt-in source offsets
 │       ├── tape.dart         # dynamic tape, 8-bit wrapping cells
-│       ├── interpreter.dart  # execution engine
-│       ├── io.dart           # BrainfuckIO abstraction + stdin/stdout impl
+│       ├── stepper.dart      # single-stepping execution engine (pc, step, run)
+│       ├── interpreter.dart  # batch facade over Stepper
+│       ├── io.dart           # BrainfuckIO abstraction
+│       ├── stdio.dart        # StdioBrainfuckIO: stdin/stdout implementation
 │       ├── repl.dart         # REPL: bracket buffering, continuation, q/exit/EOF to quit
 │       └── exceptions.dart   # parse/runtime exceptions with positions
 ├── example/
+│   ├── brainfxxk_example.dart # runnable library example (parse + Interpreter)
+│   ├── stepper_example.dart   # runnable Stepper example (trace + retry)
 │   ├── hello_world.bf
 │   ├── echo.bf
 │   └── squares.bf
@@ -151,7 +157,10 @@ brainfxxk-interpreter/
     ├── parse_test.dart
     ├── tape_test.dart
     ├── interpreter_test.dart
+    ├── stepper_test.dart
     ├── repl_test.dart
+    ├── stdio_echo_harness.dart # helper process for io_test.dart
+    ├── stdio_repl_harness.dart # helper process for repl_test.dart
     └── e2e/
         └── cli_e2e_test.dart # runs example/ programs and compares expected output
 ```
