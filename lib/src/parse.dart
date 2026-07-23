@@ -19,14 +19,19 @@ import 'package:brainfxxk/src/instruction.dart';
 /// ```
 ///
 /// @param source the Brainfuck source code to compile
+/// @param recordSourceOffsets when true, record the UTF-16 offset of
+///   the source character behind every instruction into
+///   [Program.sourceOffsets]; defaults to false, which leaves
+///   [Program.sourceOffsets] null
 /// @return the compiled [Program]: instructions plus bracket jump table
 /// @throws [UnclosedBracketException] if the source ends with an
 ///   unclosed `[`; the position points at the most recently opened one
 /// @throws [UnexpectedClosingBracketException] if a `]` has no matching
 ///   `[`; the position points at that `]`
-Program parse(String source) {
+Program parse(String source, {bool recordSourceOffsets = false}) {
   final instructions = <Instruction>[];
   final jumpTable = <int>[];
+  final sourceOffsets = recordSourceOffsets ? <int>[] : null;
   final openBrackets = <({int pc, int line, int column})>[];
 
   var line = 1;
@@ -46,6 +51,7 @@ Program parse(String source) {
     };
 
     if (instruction != null) {
+      sourceOffsets?.add(i);
       final pc = instructions.length;
       instructions.add(instruction);
       if (instruction == Instruction.loopStart) {
@@ -85,5 +91,5 @@ Program parse(String source) {
     );
   }
 
-  return Program(instructions, jumpTable);
+  return Program(instructions, jumpTable, sourceOffsets: sourceOffsets);
 }

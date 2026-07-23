@@ -118,4 +118,55 @@ void main() {
       );
     });
   });
+
+  group('parse source offsets', () {
+    test('is null by default', () {
+      expect(parse('+.').sourceOffsets, isNull);
+    });
+
+    test('records the UTF-16 offset of every instruction when asked', () {
+      final program = parse('+++[>++<-]', recordSourceOffsets: true);
+
+      expect(program.sourceOffsets, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    });
+
+    test('skips comment characters but keeps their offsets', () {
+      final program = parse('foo + bar -', recordSourceOffsets: true);
+
+      expect(program.sourceOffsets, [4, 10]);
+    });
+
+    test('counts offsets in UTF-16 code units across lines', () {
+      final program = parse('😀+\n>.', recordSourceOffsets: true);
+
+      expect(program.sourceOffsets, [2, 4, 5]);
+    });
+
+    test('records an empty list for an empty program when asked', () {
+      expect(parse('', recordSourceOffsets: true).sourceOffsets, isEmpty);
+    });
+
+    test('is unmodifiable', () {
+      final program = parse('+', recordSourceOffsets: true);
+
+      expect(() => program.sourceOffsets![0] = 1, throwsUnsupportedError);
+    });
+
+    test('is null for a Program constructed without offsets', () {
+      final program = Program([Instruction.increment], [-1]);
+
+      expect(program.sourceOffsets, isNull);
+    });
+
+    test('rejects a misaligned sourceOffsets list at construction', () {
+      expect(
+        () => Program(
+          [Instruction.increment],
+          [-1],
+          sourceOffsets: const [0, 1],
+        ),
+        throwsArgumentError,
+      );
+    });
+  });
 }

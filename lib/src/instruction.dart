@@ -52,9 +52,29 @@ final class Program {
   ///
   /// @param instructions the compiled instructions, in source order
   /// @param jumpTable the bracket jump table, aligned with [instructions]
-  Program(List<Instruction> instructions, List<int> jumpTable)
-    : instructions = UnmodifiableListView(instructions),
-      jumpTable = UnmodifiableListView(jumpTable);
+  /// @param sourceOffsets the UTF-16 source offset of each instruction,
+  ///   aligned with [instructions], or null when not recorded
+  /// @throws [ArgumentError] if [sourceOffsets] is given but has a
+  ///   different length than [instructions]
+  Program(
+    List<Instruction> instructions,
+    List<int> jumpTable, {
+    List<int>? sourceOffsets,
+  }) : instructions = UnmodifiableListView(instructions),
+       jumpTable = UnmodifiableListView(jumpTable),
+       sourceOffsets = sourceOffsets == null
+           ? null
+           : UnmodifiableListView(sourceOffsets) {
+    final offsets = this.sourceOffsets;
+    if (offsets != null && offsets.length != instructions.length) {
+      throw ArgumentError.value(
+        offsets.length,
+        'sourceOffsets',
+        'must have the same length as instructions '
+            '(${instructions.length})',
+      );
+    }
+  }
 
   /// The compiled instructions, in source order.
   final List<Instruction> instructions;
@@ -65,6 +85,17 @@ final class Program {
   /// [Instruction.loopEnd] positions, where it holds the program counter
   /// of the matching bracket; every other position holds -1.
   final List<int> jumpTable;
+
+  /// The UTF-16 offset in the source of each instruction, or null when
+  /// the program was parsed without offset recording.
+  ///
+  /// When present, the list is aligned index-by-index with
+  /// [instructions]: `sourceOffsets![i]` is the offset of the source
+  /// character that produced `instructions[i]`, so a program counter
+  /// can be mapped back to the exact character in the source — e.g. to
+  /// highlight the running instruction in an editor. Record offsets
+  /// with `parse(source, recordSourceOffsets: true)`.
+  final List<int>? sourceOffsets;
 
   /// The number of instructions in this program.
   int get length => instructions.length;
