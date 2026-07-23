@@ -101,7 +101,7 @@ void main() {
 
     test('throws parse exceptions at construction time', () {
       expect(
-        () => Interpreter.fromSource('['),
+        () => Interpreter.fromSource('[', io: _MemoryBrainfuckIO()),
         throwsA(isA<UnclosedBracketException>()),
       );
     });

@@ -16,30 +16,28 @@ import 'package:brainfxxk/src/tape.dart';
 final class Interpreter {
   /// Creates an interpreter with no preloaded program.
   ///
+  /// @param io the program's input/output channel; command-line apps
+  ///   can use `StdioBrainfuckIO` from `package:brainfxxk/stdio.dart`
   /// @param tape the tape to execute on; a fresh 30000-cell tape is
   ///   created when omitted. Passing the same tape to one interpreter
   ///   keeps cell and pointer state across [run] calls — the REPL is
   ///   built on this
-  /// @param io the program's input/output channel; defaults to
-  ///   stdin/stdout
-  Interpreter({Tape? tape, BrainfuckIO? io})
+  Interpreter({required this._io, Tape? tape})
     : _tape = tape ?? Tape(),
-      _io = io ?? const StdioBrainfuckIO(),
       _program = null;
 
   /// Creates an interpreter and compiles [source] at construction time.
   ///
   /// @param source the Brainfuck source code to compile
+  /// @param io the program's input/output channel; command-line apps
+  ///   can use `StdioBrainfuckIO` from `package:brainfxxk/stdio.dart`
   /// @param tape the tape to execute on; a fresh 30000-cell tape is
   ///   created when omitted
-  /// @param io the program's input/output channel; defaults to
-  ///   stdin/stdout
   /// @throws [UnclosedBracketException] if [source] has an unclosed `[`
   /// @throws [UnexpectedClosingBracketException] if [source] has a `]`
   ///   with no matching `[`
-  Interpreter.fromSource(String source, {Tape? tape, BrainfuckIO? io})
+  Interpreter.fromSource(String source, {required this._io, Tape? tape})
     : _tape = tape ?? Tape(),
-      _io = io ?? const StdioBrainfuckIO(),
       _program = parse(source);
 
   final Tape _tape;

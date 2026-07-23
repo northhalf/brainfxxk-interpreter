@@ -9,6 +9,7 @@ import 'package:brainfxxk/src/instruction.dart';
 import 'package:brainfxxk/src/interpreter.dart';
 import 'package:brainfxxk/src/io.dart';
 import 'package:brainfxxk/src/parse.dart';
+import 'package:brainfxxk/src/stdio.dart';
 
 /// An interactive Brainfuck read-eval-print loop.
 ///

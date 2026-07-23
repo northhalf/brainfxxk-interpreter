@@ -96,18 +96,27 @@ Exit codes: 0 success / 1 runtime error / 64 usage error / 66 file not found or 
 
 ```dart
 import 'package:brainfxxk/brainfxxk.dart';
+import 'package:brainfxxk/stdio.dart';
 
 void main() {
   // Option 1: build from a source string and run
-  Interpreter.fromSource('+++++[>+++++++++++++<-]>.').run(); // prints A
+  Interpreter.fromSource(
+    '+++++[>+++++++++++++<-]>.',
+    io: const StdioBrainfuckIO(),
+  ).run(); // prints A
 
   // Option 2: parse into a Program first, then run; tape is inspectable
   final program = parse('+++++[>+++++++++++++<-]>.');
-  final interpreter = Interpreter();
+  final interpreter = Interpreter(io: const StdioBrainfuckIO());
   interpreter.run(program);
   print(interpreter.tape[1]); // 65
 }
 ```
+
+The core entrypoint `package:brainfxxk/brainfxxk.dart` is platform-neutral
+pure Dart (it compiles to the web): you supply the `BrainfuckIO`. CLI apps
+additionally import `package:brainfxxk/stdio.dart` (`StdioBrainfuckIO`) and
+`package:brainfxxk/repl.dart` (`Repl`).
 
 Parsing and execution are separate: a `Program` can be run repeatedly, and
 passing the same `Tape` to an `Interpreter` preserves tape state across

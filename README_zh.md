@@ -87,18 +87,27 @@ Exit code:0 成功 / 1 运行错误 / 64 用法错误 / 66 文件不存在或不
 
 ```dart
 import 'package:brainfxxk/brainfxxk.dart';
+import 'package:brainfxxk/stdio.dart';
 
 void main() {
   // 方式一:源码字符串直接构造并执行
-  Interpreter.fromSource('+++++[>+++++++++++++<-]>.').run(); // 输出 A
+  Interpreter.fromSource(
+    '+++++[>+++++++++++++<-]>.',
+    io: const StdioBrainfuckIO(),
+  ).run(); // 输出 A
 
   // 方式二:先解析为 Program,再执行;可检查纸带状态
   final program = parse('+++++[>+++++++++++++<-]>.');
-  final interpreter = Interpreter();
+  final interpreter = Interpreter(io: const StdioBrainfuckIO());
   interpreter.run(program);
   print(interpreter.tape[1]); // 65
 }
 ```
+
+核心入口 `package:brainfxxk/brainfxxk.dart` 是平台无关的纯 Dart(可编译到
+Web),`BrainfuckIO` 由调用方提供;CLI 应用可额外导入
+`package:brainfxxk/stdio.dart`(`StdioBrainfuckIO`)与
+`package:brainfxxk/repl.dart`(`Repl`)。
 
 解析与执行分离,同一个 `Program` 可重复执行;向 `Interpreter` 传入同一个
 `Tape` 可跨多次 `run()` 保留纸带状态(REPL 即基于此实现)。

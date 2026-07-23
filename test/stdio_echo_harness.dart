@@ -2,7 +2,7 @@
 /// and emits a 0xFF sentinel once read() reports EOF.
 library;
 
-import 'package:brainfxxk/brainfxxk.dart';
+import 'package:brainfxxk/stdio.dart';
 
 void main() {
   const io = StdioBrainfuckIO();

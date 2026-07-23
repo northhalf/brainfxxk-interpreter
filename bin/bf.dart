@@ -5,6 +5,8 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:brainfxxk/brainfxxk.dart';
+import 'package:brainfxxk/repl.dart';
+import 'package:brainfxxk/stdio.dart';
 
 /// Runs the `bf` command: file mode, `-e` eval mode, or the REPL.
 ///
@@ -85,7 +87,7 @@ Future<void> _runFile(String path) async {
 
 void _runSource(String source) {
   try {
-    Interpreter.fromSource(source).run();
+    Interpreter.fromSource(source, io: const StdioBrainfuckIO()).run();
   } on BrainfuckException catch (e) {
     stderr.writeln('bf: $e');
     exitCode = 1;

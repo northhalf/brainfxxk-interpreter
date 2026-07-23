@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:brainfxxk/brainfxxk.dart';
+import 'package:brainfxxk/repl.dart';
 import 'package:test/test.dart';
 
 void main() {
