@@ -101,12 +101,12 @@ void main() {
       expect(utf8.decode(result.stdout as List<int>), 'Hello World!\n');
     });
 
-    test('squares.bf prints a star bar chart of squares', () async {
+    test('squares.bf prints square numbers from 0 to 10000', () async {
       final result = await runCli(['example/squares.bf']);
 
       expect(result.exitCode, 0, reason: result.stderr as String);
       final expected = [
-        for (final n in [25, 16, 9, 4, 1]) '*' * n,
+        for (var n = 0; n <= 100; n++) '${n * n}',
       ].join('\n');
       expect(utf8.decode(result.stdout as List<int>), '$expected\n');
     });
